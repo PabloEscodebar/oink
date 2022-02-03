@@ -2,9 +2,12 @@
 #ifndef ZLKS_HPP
 #define ZLKS_HPP
 
-#include <queue>
+#include <utility>
 
+#include "oink.hpp"
 #include "solver.hpp"
+
+using std::pair, std::get;
 
 namespace pg
 {
@@ -17,10 +20,6 @@ public:
 
     virtual void run();
 
-    int iterations;
-
-    uintqueue Q;
-
     /**
      * @brief returns the highest priority in the subgame.
      */
@@ -29,16 +28,19 @@ public:
     /**
      * @brief returns the subgame of all nodes with priority pr.
      */
-    bitset prSubgame(int pr);
+    bitset prSubgame(int pr, bitset supergame);
     
     /**
      * @brief returns the attractor of the subgame for the specified player 
      */
     bitset attract(bool player, bitset Subgame);
     
-    int* subgameInEdges(bitset Subgame);
+    pair<bitset, bitset> solve(bitset Subgame);
 
-    void solve(bitset Subgame);
+protected:
+    int iterations;
+    int *str;
+    // bitset W0, W1; // current approximation of winning areas
 };
 
 }
