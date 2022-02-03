@@ -53,10 +53,11 @@ namespace pg
             {
                 if (attr[v]) // If v is currently in the attractor
                 {
-                    for (auto *in = ins(v); *in != -1; in++) // Consider each in edge
+                    for (auto *in = ins(v); *in != -1; in++) // Consider each in edge to v
                     {
                         if (owner(*in) == player) // The player can force from 'in' to 'v'
                         {
+                            str[*in] = v;
                             attr.set(*in);
                         }
                         else // Check if the opponent has no choice but to enter the attractor
@@ -85,10 +86,12 @@ namespace pg
 
     pair<bitset, bitset> ZLKSSolver::solve(bitset game)
     {
+        iterations++;
         bitset W0 (nodecount());
         bitset W1 (nodecount());
         pair<bitset, bitset> WPair (W0, W1);
 
+        // std::cout << "*******" << game.count() << std::endl;
         if (game.count()==0)
         {
             return WPair;
@@ -102,23 +105,30 @@ namespace pg
         W0 = WPair.first;
         W1 = WPair.second;
 
-        bitset WP = (player) ? W1 : W0;
-        bitset WPc = (player) ? W0 : W1;
-        bitset WpPc = attract(1-player, WPc);
+        bitset* WP = (player) ? &W1 : &W0;
+        bitset* WPc = (player) ? &W0 : &W1;
+        bitset WpPc = attract(1-player, *WPc);
 
-        if (WpPc == WPc)
+        if (WpPc == *WPc)
         {
-            WP = WP | maxAttr;
+            *WP = *WP | maxAttr;
         } else
         {
             WPair = solve(game & ~WpPc);
             W0 = WPair.first;
             W1 = WPair.second;
-            WPc = (player) ? W0 : W1;
-            WPc = WPc | WpPc;
+            WP = (player) ? &W1 : &W0;
+            WPc = (player) ? &W0 : &W1;
+            *WPc = *WPc | WpPc;
         }
         WPair = pair<bitset, bitset>(W0, W1);
-        
+
+        // std::cout << "****0*" << W0.count() << std::endl;
+        // std::cout << "****1*" << W1.count() << std::endl;
+        // std::cout << "****p*" << (*WP).count() << std::endl;
+        // std::cout << "****c*" << (*WPc).count() << std::endl;
+        // std::cout << "****c*" << (*WPc).count() << std::endl;
+
         return WPair;
         
     }
@@ -126,6 +136,7 @@ namespace pg
     void ZLKSSolver::run(){
         iterations = 0;
 
+        // std::cout << "*********1" << std::endl;
         str = new int[nodecount()];
 
         bitset G(nodecount());
@@ -164,6 +175,7 @@ namespace pg
     }
 #endif
 
+        // std::cout << "*********2" << std::endl;
         for (int v=0; v<nodecount(); v++) {
             if (disabled[v]) continue;
             if (W0[v]) oink->solve(v, 0, str[v]);
