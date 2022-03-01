@@ -154,18 +154,19 @@ namespace pg
         {
             for (int t = 0; t < ceil(log2(nodecount())); t++)
             {
-                BNode evenTree (vector<dynamic_bitset<>>(), k-1, (k-1)+t, d/2);
-                BNode oddTree (vector<dynamic_bitset<>>(), k-1, (k-1)+t, d/2);
+                iterations++;
+                BNode evenTree (vector<dynamic_bitset<>>(), k-1, (k-1)+t, ceil(d/2));
+                BNode oddTree (vector<dynamic_bitset<>>(), k-1, (k-1)+t, ceil(d/2));
 
-                // test with different methods to solve
+                // TODO test with different ways of calling even and odd
                 if (d % 2)
                 {
                     W0 = solveEven(G, d, evenTree, oddTree);
                     W1 = ~W0;
                 } else
                 {
-                    W1 = solveOdd(G, d, evenTree, oddTree);
-                    W0 = ~W1;
+                    W0 = solveEven(G, d+1, evenTree, oddTree);
+                    W1 = ~W0;
                 }
 
                 // TODO if solved then break

@@ -39,6 +39,7 @@
 #include "dtl.hpp"
 
 #include "zlks.hpp"
+#include "uad.hpp"
 
 namespace pg {
 
@@ -76,6 +77,7 @@ Solvers::Solvers()
     add("tl", "tangle learning", 0, [] (Oink* oink, Game* game) { return new TLSolver(oink, game); });
 
     add("zlks", "simple implementation of Zielonka", 0, [] (Oink* oink, Game* game) { return new ZLKSSolver(oink, game); });
+    add("uad", "universal attractor decomposition using Strahler trees", 0, [] (Oink* oink, Game* game) { return new UADSolver(oink, game); });
 
 }       
 

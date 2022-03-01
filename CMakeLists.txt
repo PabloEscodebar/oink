@@ -68,6 +68,9 @@ target_sources(oink
     src/scc.cpp
     src/solvers.cpp
     src/verifier.cpp
+    
+    src/BNode.cpp
+
     # Solvers
     src/zlk.cpp
     src/zlkq.cpp
@@ -92,6 +95,7 @@ target_sources(oink
     src/dtl.cpp
 
     src/zlks.cpp
+    src/uad.cpp
 
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src/oink.hpp>
