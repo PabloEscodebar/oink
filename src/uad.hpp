@@ -7,7 +7,7 @@
 
 #include "oink.hpp"
 #include "solver.hpp"
-#include "BNode.cpp"
+#include "BNode.hpp"
 
 using std::log2;
 using std::ceil;
