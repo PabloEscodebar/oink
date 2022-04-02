@@ -16,6 +16,8 @@ public:
     BNode(vector<dynamic_bitset<>> desc, int strings, int bits, int height);
     ~BNode();
     int numChildren();
+    bool canFirstChild();
     BNode* firstChild();
+    bool canNextSibling();
     BNode* nextSibling();
 };

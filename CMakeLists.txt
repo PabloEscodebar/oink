@@ -72,29 +72,29 @@ target_sources(oink
     src/BNode.cpp
 
     # Solvers
-    src/zlk.cpp
-    src/zlkq.cpp
-    src/npp.cpp
-    src/pp.cpp
-    src/ppp.cpp
-    src/rr.cpp
-    src/dp.cpp
-    src/rrdp.cpp
-    src/fpi.cpp
-    src/fpj.cpp
-    src/psi.cpp
-    src/spm.cpp
-    src/mspm.cpp
-    src/tspm.cpp
-    src/sspm.cpp
-    src/qpt.cpp
-    src/tl.cpp
-    src/rtl.cpp
-    src/zlkpp.cpp
-    src/ptl.cpp
-    src/dtl.cpp
+    # src/zlk.cpp
+    # src/zlkq.cpp
+    # src/npp.cpp
+    # src/pp.cpp
+    # src/ppp.cpp
+    # src/rr.cpp
+    # src/dp.cpp
+    # src/rrdp.cpp
+    # src/fpi.cpp
+    # src/fpj.cpp
+    # src/psi.cpp
+    # src/spm.cpp
+    # src/mspm.cpp
+    # src/tspm.cpp
+    # src/sspm.cpp
+    # src/qpt.cpp
+    # src/tl.cpp
+    # src/rtl.cpp
+    # src/zlkpp.cpp
+    # src/ptl.cpp
+    # src/dtl.cpp
 
-    src/zlks.cpp
+    # src/zlks.cpp
     src/uad.cpp
 
   PUBLIC
@@ -235,7 +235,8 @@ if(NOT subproject)
     # add_test(NAME TestSolverZLKPP1 COMMAND test_solvers ${CMAKE_CURRENT_SOURCE_DIR}/tests --zlkpp-std)
     # add_test(NAME TestSolverZLKPP2 COMMAND test_solvers ${CMAKE_CURRENT_SOURCE_DIR}/tests --zlkpp-waw)
     # add_test(NAME TestSolverZLKPP3 COMMAND test_solvers ${CMAKE_CURRENT_SOURCE_DIR}/tests --zlkpp-liv)
-    add_test(NAME TestSolverZLKS COMMAND test_solvers ${CMAKE_CURRENT_SOURCE_DIR}/tests --zlks)
+    # add_test(NAME TestSolverZLKS COMMAND test_solvers ${CMAKE_CURRENT_SOURCE_DIR}/tests --zlks)
+    add_test(NAME TestSolverUAD COMMAND test_solvers ${CMAKE_CURRENT_SOURCE_DIR}/tests --uad)
 endif()
 
 

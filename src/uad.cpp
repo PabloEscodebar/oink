@@ -85,7 +85,7 @@ namespace pg
     }
 
     bitset UADSolver::solveEven(bitset Subgame, int d, BNode evenTree, BNode oddTree){
-        int k = oddTree.numChildren();
+        // int k = oddTree.numChildren();
         // Bitsets corresponding to the subgames in the algorithm from JM2020
         // Since we no longer need X_i after we have X_i+1, we store in 1 variable each
         bitset G = Subgame;
@@ -94,10 +94,16 @@ namespace pg
         // Gp = G' in the paper
         bitset Gp;
 
+        if (!oddTree.canFirstChild())
+        {
+            return G;
+        }
+        
+
         // Corresponds to T_i ^Odd in the paper
         BNode treeChild = *oddTree.firstChild();
 
-        for (int i = 0; i < k; i++)
+        while (treeChild.canNextSibling())
         {
             D = prSubgame(d, G);
             Gp = G & ~attract(0, D);
@@ -105,12 +111,15 @@ namespace pg
             G = G & ~attract(1, U);
             treeChild = *treeChild.nextSibling();
         }
-        
+        D = prSubgame(d, G);
+        Gp = G & ~attract(0, D);
+        U = solveOdd(Gp, d-1, evenTree, treeChild);
+        G = G & ~attract(1, U);
         return G;
     };
 
     bitset UADSolver::solveOdd(bitset Subgame, int d, BNode evenTree, BNode oddTree){
-        int l = evenTree.numChildren();
+        // int l = evenTree.numChildren();
         // Bitsets corresponding to the subgames in the algorithm from JM2020
         // Since we no longer need X_i after we have X_i+1, we store in 1 variable each
         bitset G = Subgame;
@@ -119,18 +128,25 @@ namespace pg
         // Gp = G' in the paper
         bitset Gp;
 
+        if (!evenTree.canFirstChild())
+        {
+            return G;
+        }
         // Corresponds to T_i ^Even in the paper
         BNode treeChild = *evenTree.firstChild();
 
-        for (int i = 0; i < l; i++)
+        while (treeChild.canNextSibling())
         {
             D = prSubgame(d, G);
             Gp = G & ~attract(0, D);
-            U = solveOdd(Gp, d-1, treeChild, oddTree);
+            U = solveEven(Gp, d-1, treeChild, oddTree);
             G = G & ~attract(1, U);
             treeChild = *treeChild.nextSibling();
         }
-        
+        D = prSubgame(d, G);
+        Gp = G & ~attract(0, D);
+        U = solveEven(Gp, d-1, treeChild, oddTree);
+        G = G & ~attract(1, U);
         return G;
     };
 
@@ -150,16 +166,16 @@ namespace pg
 
         // This is quite a large number of repeats, but most examples are solved in a few (< 3 or 4)
         // iterations of the outer loop
-        for (int k = 0; k < ceil(log2(nodecount())); k++)
+        for (int k = 0; k <= ceil(log2(nodecount())); k++)
         {
-            for (int t = 0; t < ceil(log2(nodecount())); t++)
+            for (int t = 0; t <= ceil(log2(nodecount())); t++)
             {
                 iterations++;
-                BNode evenTree (vector<dynamic_bitset<>>(), k-1, (k-1)+t, ceil(d/2));
-                BNode oddTree (vector<dynamic_bitset<>>(), k-1, (k-1)+t, ceil(d/2));
+                BNode evenTree (vector<dynamic_bitset<>>(), k-1, (k-1)+t, (double) ceil(d/2.0));
+                BNode oddTree (vector<dynamic_bitset<>>(), k-1, (k-1)+t, (double) ceil(d/2.0));
 
                 // TODO test with different ways of calling even and odd
-                if (d % 2)
+                if (d % 2 == 0)
                 {
                     W0 = solveEven(G, d, evenTree, oddTree);
                     W1 = ~W0;

@@ -36,6 +36,10 @@ int BNode::numChildren(){
     
 }
 
+bool BNode::canFirstChild() {
+    return this->description.size() < this->height;
+}
+
 BNode* BNode::firstChild()
 {
     vector<dynamic_bitset<>> newDesc = this->description;
@@ -58,6 +62,10 @@ BNode* BNode::firstChild()
         return newNode;
     }
     
+}
+
+bool BNode::canNextSibling() {
+    return !((this->description.size()==0)||(this->bits==0 && this->description.back().all()));
 }
 
 BNode* BNode::nextSibling()
